@@ -53,12 +53,16 @@ jobs:
           echo "Testing $project imports..."
           cd $project
           python -c "
-          try:
-              import main
-              print('$project: Import OK')
-          except Exception as e:
-              print(f'$project: Import failed - {e}')
-              exit(1)
-          "
+        try:
+            # Test individual module imports without executing main
+            import task_manager
+            import task
+            import storage
+            import constants
+            print('$project: Core modules OK')
+        except Exception as e:
+            print(f'$project: Import failed - {e}')
+            exit(1)
+        "
           cd ..
         done
