@@ -1,0 +1,8 @@
+# Core dependencies
+schedule==1.2.2
+bcrypt==4.0.1
+
+# Note: tkinter comes with Python by default
+# If tkinter is not available, install system packages:
+# macOS: brew install python-tk
+# Windows: tkinter is included with Python

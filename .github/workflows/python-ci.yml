@@ -1,0 +1,72 @@
+name: Python CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.13]
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y python3-tk
+    
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements-ci.txt
+    
+    - name: Lint with flake8
+      run: |
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+    
+    - name: Test python_fundamentals
+      run: |
+        cd python_fundamentals
+        python -c "import task_manager; print('python_fundamentals: OK')"
+    
+    - name: Test oop
+      run: |
+        cd oop
+        python -c "import main; print('oop: OK')"
+    
+    - name: Test GUI applications (imports only)
+      run: |
+        # Test that GUI modules can be imported without creating windows
+        for project in gui-tkinter gui-tkinter-grid gui-tkinter-login; do
+          echo "Testing $project imports..."
+          cd $project
+          python -c "
+        try:
+            # Test individual module imports without executing main
+            import task_manager
+            import task
+            import storage
+            # Only import constants if it exists
+            try:
+                import constants
+                print('$project: All modules OK (including constants)')
+            except ImportError:
+                print('$project: Core modules OK (constants not found)')
+        except Exception as e:
+            print(f'$project: Import failed - {e}')
+            exit(1)
+        "
+          cd ..
+        done
