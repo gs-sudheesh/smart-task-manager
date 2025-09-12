@@ -46,17 +46,19 @@ jobs:
         cd oop
         python -c "import main; print('oop: OK')"
     
-    - name: Test gui-tkinter
+    - name: Test GUI applications (imports only)
       run: |
-        cd gui-tkinter
-        python -c "import main; print('gui-tkinter: OK')"
-    
-    - name: Test gui-tkinter-grid
-      run: |
-        cd gui-tkinter-grid
-        python -c "import main; print('gui-tkinter-grid: OK')"
-    
-    - name: Test gui-tkinter-login
-      run: |
-        cd gui-tkinter-login
-        python -c "import main; print('gui-tkinter-login: OK')"
+        # Test that GUI modules can be imported without creating windows
+        for project in gui-tkinter gui-tkinter-grid gui-tkinter-login; do
+          echo "Testing $project imports..."
+          cd $project
+          python -c "
+          try:
+              import main
+              print('$project: Import OK')
+          except Exception as e:
+              print(f'$project: Import failed - {e}')
+              exit(1)
+          "
+          cd ..
+        done
