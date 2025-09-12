@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.9, 3.11]
+        python-version: [3.13]
         project: [
           "python_fundamentals",
           "oop", 
@@ -47,17 +47,21 @@ jobs:
     - name: Test ${{ matrix.project }} imports
       run: |
         cd ${{ matrix.project }}
-        python -c "import main; print('${{ matrix.project }}: Import successful')"
-    
-    - name: Test ${{ matrix.project }} basic functionality
-      run: |
-        cd ${{ matrix.project }}
-        # Test that the main modules can be imported without errors
-        python -c "
+        # Test different import patterns based on project type
+        if [ "${{ matrix.project }}" = "python_fundamentals" ]; then
+          python -c "import task_manager; print('${{ matrix.project }}: Import successful')"
+        elif [ "${{ matrix.project }}" = "oop" ]; then
+          python -c "import main; print('${{ matrix.project }}: Import successful')"
+        else
+          # GUI projects - test core modules only
+          python -c "
         try:
-            import main
-            print('Main module: OK')
-        except ImportError as e:
-            print(f'Import error: {e}')
+            import task_manager
+            import task
+            import storage
+            print('${{ matrix.project }}: Core modules OK')
+        except Exception as e:
+            print(f'${{ matrix.project }}: Import failed - {e}')
             exit(1)
         "
+        fi

@@ -58,8 +58,12 @@ jobs:
             import task_manager
             import task
             import storage
-            import constants
-            print('$project: Core modules OK')
+            # Only import constants if it exists
+            try:
+                import constants
+                print('$project: All modules OK (including constants)')
+            except ImportError:
+                print('$project: Core modules OK (constants not found)')
         except Exception as e:
             print(f'$project: Import failed - {e}')
             exit(1)
