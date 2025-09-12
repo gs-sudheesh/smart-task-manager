@@ -1,5 +1,9 @@
+# Comprehensive CI Workflow for Smart Task Manager
+# This workflow runs comprehensive tests on all projects in parallel
+# Only triggers on main branch pushes and PRs to main/develop
 name: Python Comprehensive CI
 
+# Trigger conditions: more selective than basic CI
 on:
   pull_request:
     branches: [ main, develop ]
@@ -8,52 +12,85 @@ on:
 
 jobs:
   test-all-projects:
+    # Use Ubuntu latest for consistent CI environment
     runs-on: ubuntu-latest
+    
+    # Matrix strategy: test each project with Python 3.13
+    # This creates parallel jobs for each project
     strategy:
       matrix:
         python-version: [3.13]
         project: [
-          "python_fundamentals",
-          "oop", 
-          "gui-tkinter",
-          "gui-tkinter-grid",
-          "gui-tkinter-login"
+          "python_fundamentals",    # Procedural CLI
+          "oop",                    # Object-oriented CLI
+          "gui-tkinter",           # Basic GUI
+          "gui-tkinter-grid",      # Advanced GUI
+          "gui-tkinter-login",     # GUI with authentication
+          "web-interface"          # Flask web application
         ]
 
     steps:
+    # Checkout the repository code
     - uses: actions/checkout@v4
     
+    # Set up Python environment with specified version
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
     
+    # Install system dependencies required for tkinter GUI applications
+    # This is crucial for GUI projects to work in headless CI environment
     - name: Install system dependencies
       run: |
         sudo apt-get update
         sudo apt-get install -y python3-tk
     
+    # Install dependencies: core packages + project-specific requirements
+    # Conditional installation based on project requirements.txt existence
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
+        # Install core dependencies for all projects
         pip install schedule bcrypt flake8 pytest
+        # Install Flask dependencies for web-interface
+        pip install Flask Flask-SQLAlchemy
+        # Install project-specific requirements if available
         if [ -f ${{ matrix.project }}/requirements.txt ]; then pip install -r ${{ matrix.project }}/requirements.txt; fi
     
+    # Code quality checks using flake8 linter
+    # Check for critical errors and code style issues
     - name: Lint ${{ matrix.project }}
       run: |
         cd ${{ matrix.project }}
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics --max-line-length=127
     
+    # Test project imports based on project type
+    # Different projects have different module structures
     - name: Test ${{ matrix.project }} imports
       run: |
         cd ${{ matrix.project }}
         # Test different import patterns based on project type
         if [ "${{ matrix.project }}" = "python_fundamentals" ]; then
+          # Procedural CLI: test task_manager module
           python -c "import task_manager; print('${{ matrix.project }}: Import successful')"
         elif [ "${{ matrix.project }}" = "oop" ]; then
+          # Object-oriented CLI: test main module
           python -c "import main; print('${{ matrix.project }}: Import successful')"
+        elif [ "${{ matrix.project }}" = "web-interface" ]; then
+          # Flask web app: test Flask app and models
+          python -c "
+        try:
+            import app
+            import task
+            from app import app as flask_app
+            print('${{ matrix.project }}: Flask app imports OK')
+        except Exception as e:
+            print(f'${{ matrix.project }}: Import failed - {e}')
+            exit(1)
+        "
         else
-          # GUI projects - test core modules only
+          # GUI projects - test core modules only (avoid TclError)
           python -c "
         try:
             import task_manager
