@@ -92,8 +92,7 @@ jobs:
             exit(1)
         "
         elif [ "${{ matrix.project }}" = "rest-api" ]; then
-          # REST API: install deps and run unit tests
-          cd rest-api
+          # REST API: install deps and run unit tests (already in ${{ matrix.project }})
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pytest -q
