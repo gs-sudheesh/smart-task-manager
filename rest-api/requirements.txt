@@ -1,0 +1,8 @@
+flask
+flask_sqlalchemy
+flask_login
+werkzeug
+pyyaml
+pytest
+pytest-flask
+pytest-cov
