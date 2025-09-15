@@ -1,6 +1,8 @@
 # Smart Task Manager
 ![Python CI](https://github.com/gs-sudheesh/smart-task-manager/workflows/Python%20CI/badge.svg)
+![Python CI](https://github.com/gs-sudheesh/smart-task-manager/workflows/Python%20CI/badge.svg)
 
+A comprehensive Python-based task management application showcasing different programming paradigms and user interfaces. This project includes multiple implementations ranging from command-line interfaces to modern GUI applications with user authentication.
 A comprehensive Python-based task management application showcasing different programming paradigms and user interfaces. This project includes multiple implementations ranging from command-line interfaces to modern GUI applications with user authentication.
 
 ## 📁 Project Structure
@@ -47,11 +49,35 @@ smart-task-manager/
 - Python 3.6+ (no external packages required)
 
 ### Installation & Run
+### Installation & Run
 ```bash
 cd python_fundamentals
 python task_manager.py
 ```
 
+### Usage
+- Follow the interactive menu prompts
+- Date format: `DD/MM/YYYY` (e.g., 25/12/2024)
+- Priority levels: Low, Med, High
+
+---
+
+## 🏗️ Project 2: Object-Oriented Programming (CLI)
+
+**Location:** `oop/`
+
+### Features
+- ✅ All features from python_fundamentals
+- ✅ Sort tasks by priority (Low < Medium < High)
+- ✅ Sort tasks by due date (earliest first)
+- ✅ Filter tasks by keyword search
+- ✅ Clean OOP architecture with Task and TaskManager classes
+- ✅ Better code organization and reusability
+
+### Dependencies
+- Python 3.6+ (no external packages required)
+
+### Installation & Run
 ### Usage
 - Follow the interactive menu prompts
 - Date format: `DD/MM/YYYY` (e.g., 25/12/2024)
@@ -343,8 +369,10 @@ sudo apt-get install python3-tk
 - File I/O operations
 - JSON data handling
 - Error handling
+- Error handling
 - User input validation
 
+#### Object-Oriented Programming
 #### Object-Oriented Programming
 - Class definition and instantiation
 - Encapsulation and data hiding
@@ -423,10 +451,18 @@ Potential improvements across all projects:
 - Task categories and tags
 - Due date reminders and notifications
 - Task completion tracking
+Potential improvements across all projects:
+- Task categories and tags
+- Due date reminders and notifications
+- Task completion tracking
 - Export/import functionality
 - Database integration
 - Task dependencies and subtasks
+- Task dependencies and subtasks
 - Recurring tasks
+- Mobile app versions
+- Web interface
+- Team collaboration features
 - Mobile app versions
 - Web interface
 - Team collaboration features
