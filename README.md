@@ -1,6 +1,8 @@
 # Smart Task Manager
 ![Python CI](https://github.com/gs-sudheesh/smart-task-manager/workflows/Python%20CI/badge.svg)
+![Python CI](https://github.com/gs-sudheesh/smart-task-manager/workflows/Python%20CI/badge.svg)
 
+A comprehensive Python-based task management application showcasing different programming paradigms and user interfaces. This project includes multiple implementations ranging from command-line interfaces to modern GUI applications with user authentication.
 A comprehensive Python-based task management application showcasing different programming paradigms and user interfaces. This project includes multiple implementations ranging from command-line interfaces to modern GUI applications with user authentication.
 
 ## 📁 Project Structure
@@ -12,6 +14,8 @@ smart-task-manager/
 ├── gui-tkinter/                 # Basic GUI with tkinter (Pack layout)
 ├── gui-tkinter-grid/            # Advanced GUI with tkinter (Grid layout)
 ├── gui-tkinter-login/           # GUI with user authentication system
+├── web-interface/               # Modern web application with Flask
+├── rest-api/                    # Flask REST API with OpenAPI docs, Docker
 ├── requirements.txt             # Global dependencies
 └── README.md                   # This file
 ```
@@ -25,6 +29,8 @@ smart-task-manager/
 | **gui-tkinter** | GUI | Basic GUI with pack layout | Intermediate |
 | **gui-tkinter-grid** | GUI | Advanced GUI with grid layout | Advanced |
 | **gui-tkinter-login** | GUI | Full authentication system | Expert |
+| **web-interface** | Web | Modern responsive web app | Expert |
+| **rest-api** | API | Flask REST API + Swagger UI | Expert |
 
 ---
 
@@ -43,11 +49,35 @@ smart-task-manager/
 - Python 3.6+ (no external packages required)
 
 ### Installation & Run
+### Installation & Run
 ```bash
 cd python_fundamentals
 python task_manager.py
 ```
 
+### Usage
+- Follow the interactive menu prompts
+- Date format: `DD/MM/YYYY` (e.g., 25/12/2024)
+- Priority levels: Low, Med, High
+
+---
+
+## 🏗️ Project 2: Object-Oriented Programming (CLI)
+
+**Location:** `oop/`
+
+### Features
+- ✅ All features from python_fundamentals
+- ✅ Sort tasks by priority (Low < Medium < High)
+- ✅ Sort tasks by due date (earliest first)
+- ✅ Filter tasks by keyword search
+- ✅ Clean OOP architecture with Task and TaskManager classes
+- ✅ Better code organization and reusability
+
+### Dependencies
+- Python 3.6+ (no external packages required)
+
+### Installation & Run
 ### Usage
 - Follow the interactive menu prompts
 - Date format: `DD/MM/YYYY` (e.g., 25/12/2024)
@@ -183,6 +213,92 @@ python main.py
 
 ---
 
+## 🌐 Project 6: Modern Web Interface (Flask)
+
+**Location:** `web-interface/`
+
+### Features
+- ✅ All features from GUI versions
+- ✅ Modern responsive web design
+- ✅ Real-time task management
+- ✅ SQLite database with SQLAlchemy ORM
+- ✅ RESTful API endpoints
+- ✅ Beautiful CSS styling with animations
+- ✅ Mobile-responsive design
+- ✅ Static file serving optimization
+- ✅ Professional web application architecture
+
+### Dependencies
+- Python 3.8+
+- Flask 2.3.3 (web framework)
+- Flask-SQLAlchemy 3.0.5 (database ORM)
+
+### Installation & Run
+```bash
+cd web-interface
+pip install -r requirements.txt
+python app.py
+```
+
+### Usage
+1. **Start the server**: Run `python app.py`
+2. **Open browser**: Visit `http://localhost:5000`
+3. **Add tasks**: Use the web form to create tasks
+4. **Manage tasks**: Mark complete, delete, or view all tasks
+5. **Responsive design**: Works on desktop, tablet, and mobile
+
+### Web Features
+- **Modern UI**: Gradient backgrounds, smooth animations
+- **Color-coded priorities**: Visual priority indicators
+- **Real-time updates**: Instant task list refresh
+- **Database integration**: Persistent SQLite storage
+- **Professional styling**: Clean, modern CSS design
+
+---
+
+## 🧩 Project 7: REST API (Flask)
+
+**Location:** `rest-api/`
+
+### Features
+- ✅ Flask-based REST API with session auth
+- ✅ OpenAPI 3 spec at `/api/docs/openapi.yaml`
+- ✅ Swagger UI at `/api/docs`
+- ✅ SQLite via SQLAlchemy (Docker volume at `/app/data`)
+- ✅ Dockerfile and docker-compose ready (port 8500)
+- ✅ Unit tests (strict, mocked) with pytest
+
+### Dependencies
+- Python 3.13+
+- See `rest-api/requirements.txt`
+
+### Run (local)
+```bash
+cd rest-api
+pip install -r requirements.txt
+python app.py
+# Open: http://localhost:8500/api/docs
+```
+
+### Run with Docker
+```bash
+cd rest-api
+docker-compose up --build
+# Open: http://localhost:8500/api/docs
+```
+
+### Tests
+```bash
+cd rest-api
+pytest -q
+```
+
+### Notes
+- App binds to `0.0.0.0:8500`
+- DB file stored under `rest-api/data/tasks.db` (mounted to `/app/data` in Docker)
+
+---
+
 ## 🛠️ Global Installation
 
 ### Install All Dependencies
@@ -216,19 +332,23 @@ sudo apt-get install python3-tk
 
 ## 📊 Feature Comparison
 
-| Feature | CLI Basic | CLI OOP | GUI Basic | GUI Grid | GUI Login |
-|---------|-----------|---------|-----------|----------|-----------|
-| Add Tasks | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Delete Tasks | ✅ | ✅ | ✅ | ✅ | ✅ |
-| View Tasks | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Sort by Priority | ❌ | ✅ | ✅ | ✅ | ✅ |
-| Sort by Due Date | ❌ | ✅ | ✅ | ✅ | ✅ |
-| Filter by Keyword | ❌ | ✅ | ✅ | ✅ | ✅ |
-| GUI Interface | ❌ | ❌ | ✅ | ✅ | ✅ |
-| Task Status Toggle | ❌ | ❌ | ❌ | ✅ | ✅ |
-| Background Notifications | ❌ | ❌ | ❌ | ✅ | ✅ |
-| User Authentication | ❌ | ❌ | ❌ | ❌ | ✅ |
-| Password Security | ❌ | ❌ | ❌ | ❌ | ✅ |
+| Feature | CLI Basic | CLI OOP | GUI Basic | GUI Grid | GUI Login | Web Interface |
+|---------|-----------|---------|-----------|----------|-----------|---------------|
+| Add Tasks | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Delete Tasks | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| View Tasks | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Sort by Priority | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Sort by Due Date | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Filter by Keyword | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| GUI Interface | ❌ | ❌ | ✅ | ✅ | ✅ | ❌ |
+| Web Interface | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ |
+| Task Status Toggle | ❌ | ❌ | ❌ | ✅ | ✅ | ✅ |
+| Background Notifications | ❌ | ❌ | ❌ | ✅ | ✅ | ❌ |
+| User Authentication | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ |
+| Password Security | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ |
+| Database Integration | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ |
+| Responsive Design | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ |
+| RESTful API | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ |
 
 ---
 
@@ -240,6 +360,7 @@ sudo apt-get install python3-tk
 3. **Try `gui-tkinter`** - Introduction to GUI development
 4. **Explore `gui-tkinter-grid`** - Advanced GUI layouts and features
 5. **Master `gui-tkinter-login`** - Complete application with security
+6. **Build `web-interface`** - Modern web development with Flask
 
 ### Key Learning Objectives
 
@@ -248,8 +369,10 @@ sudo apt-get install python3-tk
 - File I/O operations
 - JSON data handling
 - Error handling
+- Error handling
 - User input validation
 
+#### Object-Oriented Programming
 #### Object-Oriented Programming
 - Class definition and instantiation
 - Encapsulation and data hiding
@@ -268,19 +391,28 @@ sudo apt-get install python3-tk
 - Secure data storage
 - Authentication workflows
 
+#### Web Development
+- Flask framework and routing
+- SQLAlchemy ORM and database models
+- HTML templating with Jinja2
+- CSS styling and responsive design
+- RESTful API design principles
+
 ---
 
 ## 🔧 Technical Details
 
 ### Data Storage
-- **Tasks**: Stored in `tasks.json` files
+- **Tasks**: Stored in `tasks.json` files (CLI/GUI versions)
 - **Users**: Stored in `users.json` files (login version)
-- **Format**: Human-readable JSON with proper indentation
+- **Web Database**: SQLite database with SQLAlchemy ORM (web-interface)
+- **Format**: Human-readable JSON with proper indentation (CLI/GUI), SQLite (web)
 
 ### Date Formats
 - **CLI Basic**: `DD/MM/YYYY`
 - **CLI OOP**: `DD-MM-YYYY`
 - **GUI Versions**: `DD/MM/YYYY` (input) → `DD/MM/YYYY HH:MM` (storage)
+- **Web Interface**: `YYYY-MM-DD` (HTML date input) → SQLite datetime
 
 ### Priority Levels
 - `Low`: Low priority tasks
@@ -319,10 +451,18 @@ Potential improvements across all projects:
 - Task categories and tags
 - Due date reminders and notifications
 - Task completion tracking
+Potential improvements across all projects:
+- Task categories and tags
+- Due date reminders and notifications
+- Task completion tracking
 - Export/import functionality
 - Database integration
 - Task dependencies and subtasks
+- Task dependencies and subtasks
 - Recurring tasks
+- Mobile app versions
+- Web interface
+- Team collaboration features
 - Mobile app versions
 - Web interface
 - Team collaboration features

@@ -1,0 +1,228 @@
+{
+	"info": {
+		"_postman_id": "b5b4c97b-00ba-4c13-98f1-1bb7748b4afb",
+		"name": "smart-task-manager-rest-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23155341",
+		"_collection_link": "https://universal-space-380949.postman.co/workspace/Team-Workspace~edd9bce7-acce-4eab-8c4c-f7d52a425a34/collection/23155341-b5b4c97b-00ba-4c13-98f1-1bb7748b4afb?action=share&source=collection_link&creator=23155341"
+	},
+	"item": [
+		{
+			"name": "GET-tasks",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/api/tasks",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"tasks"
+					],
+					"query": [
+						{
+							"key": "status",
+							"value": "Pending",
+							"description": "Filter by task status (Pending, In Progress, Completed)",
+							"disabled": true
+						},
+						{
+							"key": "priority",
+							"value": "Medium",
+							"description": "Filter by task priority (High, Medium, Low)",
+							"disabled": true
+						},
+						{
+							"key": "search",
+							"value": "Bru",
+							"description": "Search tasks by title",
+							"disabled": true
+						},
+						{
+							"key": "sort",
+							"value": "priority",
+							"description": "Sort by: priority, duedate, duedate_desc",
+							"disabled": true
+						}
+					]
+				},
+				"description": "Get all tasks for the current user with optional filtering and sorting"
+			},
+			"response": []
+		},
+		{
+			"name": "POST-task",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"Brushing\",\n    \"priority\": \"High\",\n    \"due_date\": \"2025-09-30\",\n    \"status\": \"Pending\"\n}"
+				},
+				"url": {
+					"raw": "{{baseURL}}/api/tasks",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"tasks"
+					]
+				},
+				"description": "Create a new task"
+			},
+			"response": []
+		},
+		{
+			"name": "PUT-task",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"Wake up at 5\",\n    \"priority\": \"Medium\",\n    \"due_date\": \"2025-09-30\",\n    \"status\": \"Done\"\n}"
+				},
+				"url": {
+					"raw": "{{baseURL}}/api/tasks/1",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"tasks",
+						"1"
+					]
+				},
+				"description": "Update an existing task by ID"
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE-task",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/api/tasks/1",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"tasks",
+						"1"
+					]
+				},
+				"description": "Delete a task by ID"
+			},
+			"response": []
+		},
+		{
+			"name": "user-registeration",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\":\"user_one\",\n    \"password\":\"user\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/register",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user-login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\":\"user_one\",\n    \"password\":\"user\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/login",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user-logout",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/logout",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"logout"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "http://127.0.0.1:8500",
+			"description": "Base URL for the Task Manager API"
+		}
+	]
+}

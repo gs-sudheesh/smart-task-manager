@@ -1,0 +1,532 @@
+openapi: 3.0.3
+info:
+  title: Task Manager REST API
+  description: |
+    A comprehensive REST API for task management with user authentication, 
+    CRUD operations, filtering, sorting, and search capabilities.
+    
+    ## Features
+    - User registration and authentication
+    - Session-based security
+    - Personal task management
+    - Advanced filtering and sorting
+    - Task search functionality
+    - Full CRUD operations
+    
+    ## Authentication
+    This API uses session-based authentication. Users must register and login
+    to access protected endpoints. Session cookies are used for authentication.
+    
+    ## Usage Scenarios
+    - Personal productivity applications
+    - Team collaboration tools
+    - Project management systems
+    - Mobile task management apps
+    - External system integrations
+  version: 1.0.0
+  contact:
+    name: Smart Task Manager Team
+    email: support@smarttaskmanager.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://127.0.0.1:8500
+    description: Development server
+  - url: https://api.smarttaskmanager.com
+    description: Production server
+
+tags:
+  - name: Authentication
+    description: User registration, login, and logout operations
+  - name: Tasks
+    description: Task management operations (CRUD, filtering, sorting)
+
+paths:
+  /register:
+    post:
+      tags:
+        - Authentication
+      summary: Register a new user
+      description: |
+        Create a new user account with username and password. The password
+        is automatically hashed for secure storage. Username must be unique.
+      operationId: registerUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+                - password
+              properties:
+                username:
+                  type: string
+                  maxLength: 80
+                  description: Unique username for login
+                  example: "john_doe"
+                password:
+                  type: string
+                  minLength: 6
+                  description: Plain text password (will be hashed)
+                  example: "mySecurePassword123"
+      responses:
+        '201':
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User registered!"
+        '400':
+          description: Username already exists or validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /login:
+    post:
+      tags:
+        - Authentication
+      summary: Authenticate user and create session
+      description: |
+        Verify user credentials and create a secure session if authentication
+        is successful. Returns a session cookie for subsequent requests.
+      operationId: loginUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+                - password
+              properties:
+                username:
+                  type: string
+                  description: Username
+                  example: "john_doe"
+                password:
+                  type: string
+                  description: Plain text password
+                  example: "mySecurePassword123"
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Login successful!"
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /logout:
+    post:
+      tags:
+        - Authentication
+      summary: Terminate user session
+      description: |
+        Securely log out the current user by destroying their session
+        and clearing authentication cookies. Requires authentication.
+      operationId: logoutUser
+      security:
+        - sessionAuth: []
+      responses:
+        '200':
+          description: Logout successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Logged out!"
+        '401':
+          description: User not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/tasks:
+    get:
+      tags:
+        - Tasks
+      summary: Retrieve tasks with filtering and sorting
+      description: |
+        Get all tasks for the authenticated user with optional filtering
+        and sorting capabilities. Supports filtering by status, priority,
+        searching by title, and sorting by various criteria.
+      operationId: getTasks
+      security:
+        - sessionAuth: []
+      parameters:
+        - name: status
+          in: query
+          description: Filter tasks by status
+          required: false
+          schema:
+            type: string
+            enum: [Pending, "In Progress", Completed]
+            example: "Pending"
+        - name: priority
+          in: query
+          description: Filter tasks by priority level
+          required: false
+          schema:
+            type: string
+            enum: [High, Medium, Low]
+            example: "High"
+        - name: search
+          in: query
+          description: Search tasks by title (case-insensitive partial match)
+          required: false
+          schema:
+            type: string
+            example: "meeting"
+        - name: sort
+          in: query
+          description: Sort tasks by specified criteria
+          required: false
+          schema:
+            type: string
+            enum: [priority, duedate, duedate_desc]
+            example: "duedate_desc"
+      responses:
+        '200':
+          description: Successfully retrieved tasks
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Task'
+        '401':
+          description: User not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    post:
+      tags:
+        - Tasks
+      summary: Create a new task
+      description: |
+        Create a new task with the provided details and associate it with
+        the currently authenticated user. The task is immediately saved
+        to the database.
+      operationId: createTask
+      security:
+        - sessionAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskInput'
+      responses:
+        '201':
+          description: Task created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Task added!"
+                  id:
+                    type: integer
+                    description: ID of the newly created task
+                    example: 123
+        '400':
+          description: Invalid request data or validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: User not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Database or server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/tasks/{task_id}:
+    put:
+      tags:
+        - Tasks
+      summary: Update an existing task
+      description: |
+        Update an existing task by ID. Only the authenticated user who owns
+        the task can update it. Fields not provided will retain their current values.
+      operationId: updateTask
+      security:
+        - sessionAuth: []
+      parameters:
+        - name: task_id
+          in: path
+          description: The unique identifier of the task to update
+          required: true
+          schema:
+            type: integer
+            example: 123
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskUpdate'
+      responses:
+        '200':
+          description: Task updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Task updated!"
+        '400':
+          description: Invalid request data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: User not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Task not found or not owned by user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Database or server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    delete:
+      tags:
+        - Tasks
+      summary: Delete a task
+      description: |
+        Permanently remove a task from the database. Only the authenticated
+        user who owns the task can delete it. The deletion is irreversible.
+      operationId: deleteTask
+      security:
+        - sessionAuth: []
+      parameters:
+        - name: task_id
+          in: path
+          description: The unique identifier of the task to delete
+          required: true
+          schema:
+            type: integer
+            example: 123
+      responses:
+        '200':
+          description: Task deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Task deleted!"
+        '401':
+          description: User not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Task not found or not owned by user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Database or server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  securitySchemes:
+    sessionAuth:
+      type: apiKey
+      in: cookie
+      name: session
+      description: Session-based authentication using cookies
+
+  schemas:
+    Task:
+      type: object
+      description: Task entity with all attributes
+      properties:
+        id:
+          type: integer
+          description: Unique task identifier
+          example: 123
+        title:
+          type: string
+          maxLength: 100
+          description: Task title/description
+          example: "Complete project documentation"
+        priority:
+          type: string
+          enum: [High, Medium, Low]
+          description: Task priority level
+          example: "High"
+        due_date:
+          type: string
+          format: date
+          description: Task due date in YYYY-MM-DD format
+          example: "2024-12-31"
+        status:
+          type: string
+          enum: [Pending, "In Progress", Completed]
+          description: Current task status
+          example: "Pending"
+
+    TaskInput:
+      type: object
+      description: Input data for creating a new task
+      required:
+        - title
+        - priority
+        - due_date
+      properties:
+        title:
+          type: string
+          maxLength: 100
+          description: Task title/description
+          example: "Review code changes"
+        priority:
+          type: string
+          enum: [High, Medium, Low]
+          description: Task priority level
+          example: "Medium"
+        due_date:
+          type: string
+          format: date
+          description: Due date in YYYY-MM-DD format
+          example: "2024-01-15"
+        status:
+          type: string
+          enum: [Pending, "In Progress", Completed]
+          description: Initial task status (optional, defaults to "Pending")
+          default: "Pending"
+          example: "Pending"
+
+    TaskUpdate:
+      type: object
+      description: Input data for updating an existing task (all fields optional)
+      properties:
+        title:
+          type: string
+          maxLength: 100
+          description: Updated task title
+          example: "Updated task title"
+        priority:
+          type: string
+          enum: [High, Medium, Low]
+          description: Updated task priority
+          example: "Low"
+        due_date:
+          type: string
+          format: date
+          description: Updated due date in YYYY-MM-DD format
+          example: "2024-02-01"
+        status:
+          type: string
+          enum: [Pending, "In Progress", Completed]
+          description: Updated task status
+          example: "Completed"
+
+    ErrorResponse:
+      type: object
+      description: Standard error response format
+      properties:
+        error:
+          type: string
+          description: Error message describing what went wrong
+          example: "Task not found"
+      required:
+        - error
+
+    User:
+      type: object
+      description: User entity (for reference)
+      properties:
+        id:
+          type: integer
+          description: Unique user identifier
+          example: 1
+        username:
+          type: string
+          maxLength: 80
+          description: Unique username
+          example: "john_doe"
+
+externalDocs:
+  description: Find more info about Task Manager API
+  url: https://github.com/smart-task-manager/rest-api

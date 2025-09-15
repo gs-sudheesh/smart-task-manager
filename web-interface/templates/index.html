@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Smart Task Manager (Web)</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Smart Task Manager</h1>
+            <p>Organize your tasks efficiently</p>
+        </div>
+        
+        <div class="content">
+            <div class="add-task-form">
+                <h2>Add New Task</h2>
+                <form action="/add" method="post">
+                    <div class="form-group">
+                        <div class="form-field">
+                            <label for="title">Task Title</label>
+                            <input type="text" name="title" id="title" placeholder="Enter task title" required>
+                        </div>
+                        <div class="form-field">
+                            <label for="priority">Priority</label>
+                            <select name="priority" id="priority">
+                                <option value="Low">Low</option>
+                                <option value="Med">Medium</option>
+                                <option value="High">High</option>
+                            </select>
+                        </div>
+                        <div class="form-field">
+                            <label for="due_date">Due Date</label>
+                            <input type="date" name="due_date" id="due_date" required>
+                        </div>
+                        <div class="form-field">
+                            <button type="submit" class="btn btn-primary">Add Task</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="tasks-list">
+                {% if tasks %}
+                    {% for task in tasks %}
+                    <div class="task-item">
+                        <div class="task-header">
+                            <div class="task-title">{{ task.title }}</div>
+                            <div class="task-priority priority-{{ task.priority.lower() }}">{{ task.priority }}</div>
+                        </div>
+                        <div class="task-details">
+                            <div>Due: {{ task.due_date }}</div>
+                            <div class="task-status status-{{ task.status.lower() }}">{{ task.status }}</div>
+                        </div>
+                        <div class="task-actions">
+                            {% if task.status != "Done" %}
+                            <form action="/done/{{ task.id }}" method="post" style="display:inline;">
+                                <button type="submit" class="btn btn-success">Mark as Done</button>
+                            </form>
+                            {% endif %}
+                            <form action="/delete/{{ task.id }}" method="post" style="display:inline;">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-state">
+                        <h3>No tasks yet</h3>
+                        <p>Add your first task using the form above</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
