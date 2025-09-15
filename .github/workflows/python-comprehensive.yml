@@ -18,6 +18,7 @@ jobs:
     # Matrix strategy: test each project with Python 3.13
     # This creates parallel jobs for each project
     strategy:
+      fail-fast: false
       matrix:
         python-version: [3.13]
         project: [
@@ -92,9 +93,10 @@ jobs:
         "
         elif [ "${{ matrix.project }}" = "rest-api" ]; then
           # REST API: install deps and run unit tests
+          cd rest-api
           python -m pip install --upgrade pip
-          pip install -r rest-api/requirements.txt
-          cd rest-api && pytest -q
+          pip install -r requirements.txt
+          pytest -q
         else
           # GUI projects - test core modules only (avoid TclError)
           python -c "
