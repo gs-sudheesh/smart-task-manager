@@ -13,6 +13,7 @@ smart-task-manager/
 ├── gui-tkinter-grid/            # Advanced GUI with tkinter (Grid layout)
 ├── gui-tkinter-login/           # GUI with user authentication system
 ├── web-interface/               # Modern web application with Flask
+├── rest-api/                    # Flask REST API with OpenAPI docs, Docker
 ├── requirements.txt             # Global dependencies
 └── README.md                   # This file
 ```
@@ -27,6 +28,7 @@ smart-task-manager/
 | **gui-tkinter-grid** | GUI | Advanced GUI with grid layout | Advanced |
 | **gui-tkinter-login** | GUI | Full authentication system | Expert |
 | **web-interface** | Web | Modern responsive web app | Expert |
+| **rest-api** | API | Flask REST API + Swagger UI | Expert |
 
 ---
 
@@ -225,6 +227,49 @@ python app.py
 - **Real-time updates**: Instant task list refresh
 - **Database integration**: Persistent SQLite storage
 - **Professional styling**: Clean, modern CSS design
+
+---
+
+## 🧩 Project 7: REST API (Flask)
+
+**Location:** `rest-api/`
+
+### Features
+- ✅ Flask-based REST API with session auth
+- ✅ OpenAPI 3 spec at `/api/docs/openapi.yaml`
+- ✅ Swagger UI at `/api/docs`
+- ✅ SQLite via SQLAlchemy (Docker volume at `/app/data`)
+- ✅ Dockerfile and docker-compose ready (port 8500)
+- ✅ Unit tests (strict, mocked) with pytest
+
+### Dependencies
+- Python 3.13+
+- See `rest-api/requirements.txt`
+
+### Run (local)
+```bash
+cd rest-api
+pip install -r requirements.txt
+python app.py
+# Open: http://localhost:8500/api/docs
+```
+
+### Run with Docker
+```bash
+cd rest-api
+docker-compose up --build
+# Open: http://localhost:8500/api/docs
+```
+
+### Tests
+```bash
+cd rest-api
+pytest -q
+```
+
+### Notes
+- App binds to `0.0.0.0:8500`
+- DB file stored under `rest-api/data/tasks.db` (mounted to `/app/data` in Docker)
 
 ---
 
