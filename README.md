@@ -1,6 +1,5 @@
 # Smart Task Manager
 ![Python CI](https://github.com/gs-sudheesh/smart-task-manager/workflows/Python%20CI/badge.svg)
-![Python CI](https://github.com/gs-sudheesh/smart-task-manager/workflows/Python%20CI/badge.svg)
 
 A comprehensive Python-based task management application showcasing different programming paradigms and user interfaces. This project includes multiple implementations ranging from command-line interfaces to modern GUI applications with user authentication.
 A comprehensive Python-based task management application showcasing different programming paradigms and user interfaces. This project includes multiple implementations ranging from command-line interfaces to modern GUI applications with user authentication.
