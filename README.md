@@ -445,28 +445,4 @@ sudo apt-get install python3-tk
 
 ---
 
-## 🔮 Future Enhancements
-
-Potential improvements across all projects:
-- Task categories and tags
-- Due date reminders and notifications
-- Task completion tracking
-Potential improvements across all projects:
-- Task categories and tags
-- Due date reminders and notifications
-- Task completion tracking
-- Export/import functionality
-- Database integration
-- Task dependencies and subtasks
-- Task dependencies and subtasks
-- Recurring tasks
-- Mobile app versions
-- Web interface
-- Team collaboration features
-- Mobile app versions
-- Web interface
-- Team collaboration features
-
----
-
 **Happy Task Managing! 📋✨**
